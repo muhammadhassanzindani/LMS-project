@@ -94,6 +94,9 @@ mongosh
 ### Step 4: Setup Backend (Django)
 
 ```bat
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+
 python -m venv venv
 
 venv\Scripts\activate
