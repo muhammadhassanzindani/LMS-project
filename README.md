@@ -1,50 +1,57 @@
-# LMS Project
+# LMS Project (Windows Setup)
 
-A simple Learning Management System with Django backend and React frontend, using MongoDB with mongoengine ODM.
+A simple Learning Management System with a **Django backend** and **React frontend**, using **MongoDB** with **mongoengine ODM**.
 
-## Prerequisites
+---
 
-- Python 3.8+
-- Node.js 14+
-- MongoDB (local installation or MongoDB Atlas)
+## Prerequisites (Windows)
 
-## Quick Start
+* **Windows 10 / 11**
+* **Python 3.8+** (make sure *Add Python to PATH* is checked during installation)
+* **Node.js 14+** (includes npm)
+* **MongoDB** (Local installation **or** MongoDB Atlas)
+* **Git** (optional but recommended)
+
+---
+
+## Quick Start (Windows)
 
 ### Step 1: Clone and Setup Environment
 
-```bash
-# Navigate to project directory
+Open **Command Prompt** or **PowerShell**:
+
+```bat
 cd LMS-project
 
-# Copy environment file
-cp .env.example .env
-
-# Edit .env file with your MongoDB connection details
-nano .env  # or use your preferred editor
+copy .env.example .env
 ```
+
+Open `.env` in **Notepad / VS Code** and update MongoDB details.
+
+---
 
 ### Step 2: Configure Environment Variables
 
-Edit the `.env` file with your MongoDB configuration:
+Edit the `.env` file:
 
-**Option 1: Using Connection URI (Recommended)**
+#### Option 1: Using MongoDB Connection URI (Recommended)
+
 ```env
 SECRET_KEY=your-secret-key-here
 DEBUG=True
 ALLOWED_HOSTS=*
 
-# MongoDB Connection URI
 DB_CONNECTION=mongodb://localhost:27017/
 DATABASE=LMS-Project
 ```
 
-**Option 2: Using Individual Settings**
+#### Option 2: Using Individual MongoDB Settings
+
 ```env
 SECRET_KEY=your-secret-key-here
 DEBUG=True
 ALLOWED_HOSTS=*
 
-# MongoDB Individual Settings
 MONGODB_HOST=localhost
 MONGODB_PORT=27017
 MONGODB_USERNAME=
@@ -52,251 +59,231 @@ MONGODB_PASSWORD=
 DATABASE=LMS-Project
 ```
 
-**For MongoDB Atlas (Cloud):**
+#### MongoDB Atlas (Cloud)
+
 ```env
 DB_CONNECTION=mongodb+srv://username:password@cluster.mongodb.net/
 DATABASE=LMS-Project
 ```
 
+---
+
 ### Step 3: Setup MongoDB
 
-**Local MongoDB:**
-```bash
-# Install MongoDB (if not installed)
-# macOS: brew install mongodb-community
-# Ubuntu: sudo apt-get install mongodb
-# Windows: Download from mongodb.com
+#### Option A: Local MongoDB (Windows)
 
-# Start MongoDB service
-mongod  # or brew services start mongodb-community (macOS)
+1. Download MongoDB Community Server from:
+   [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
+2. Install with default settings
+3. Make sure **MongoDB Service** is running
+
+Verify installation:
+
+```bat
+mongosh
 ```
 
-**MongoDB Atlas (Cloud):**
-- Sign up at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
-- Create a free cluster
-- Get your connection string
-- Add it to `.env` as `DB_CONNECTION`
+#### Option B: MongoDB Atlas (Cloud)
+
+* Create a free cluster at MongoDB Atlas
+* Get the connection string
+* Paste it into `.env` as `DB_CONNECTION`
+
+---
 
 ### Step 4: Setup Backend (Django)
 
-```bash
-# Navigate to backend directory
+```bat
 cd backend
 
-# Create virtual environment (recommended)
-python3 -m venv venv
+python -m venv venv
 
-# Activate virtual environment
-# On macOS/Linux:
-source venv/bin/activate
-# On Windows:
 venv\Scripts\activate
 
-# Install Python dependencies
-pip install -r ../requirements.txt
+pip install -r ..\requirements.txt
 
-# Start Django development server
 python manage.py runserver
 ```
 
-The backend API will be running at `http://localhost:8000`
+Backend will run at:
 
-**Note:** With mongoengine, you don't need to run migrations like traditional Django models.
+```
+http://localhost:8000
+```
+
+> ⚠️ **Note:** No Django migrations are required because MongoDB is used via mongoengine.
+
+---
 
 ### Step 5: Setup Frontend (React)
 
-Open a **new terminal window** and run:
+Open **another Command Prompt / PowerShell window**:
 
-```bash
-# Navigate to frontend directory
+```bat
 cd frontend
 
-# Install Node.js dependencies
 npm install
 
-# Start React development server
 npm start
 ```
 
-The frontend will automatically open at `http://localhost:3000`
+Frontend will open at:
 
-## How to Run the Project
+```
+http://localhost:3000
+```
 
-### Running Backend Only
+---
 
-```bash
+## Running the Project
+
+### Backend Only
+
+```bat
 cd backend
-source venv/bin/activate  # Activate virtual environment
+venv\Scripts\activate
 python manage.py runserver
 ```
 
-Backend will be available at: `http://localhost:8000`
-API endpoints: `http://localhost:8000/api/courses/`
+### Frontend Only
 
-### Running Frontend Only
-
-```bash
+```bat
 cd frontend
 npm start
 ```
 
-Frontend will be available at: `http://localhost:3000`
+### Recommended: Run Both
 
-### Running Both (Recommended)
+**Terminal 1 (Backend):**
 
-**Terminal 1 - Backend:**
-```bash
+```bat
 cd backend
-source venv/bin/activate
+venv\Scripts\activate
 python manage.py runserver
 ```
 
-**Terminal 2 - Frontend:**
-```bash
+**Terminal 2 (Frontend):**
+
+```bat
 cd frontend
 npm start
 ```
 
-Then open your browser and navigate to `http://localhost:3000`
+Open browser:
+
+```
+http://localhost:3000
+```
+
+---
 
 ## Project Structure
 
 ```
 LMS-project/
 ├── backend/
-│   ├── lms_project/       # Django project settings
-│   ├── courses/           # Courses app with models, views, serializers
-│   ├── manage.py          # Django management script
+│   ├── lms_project/
+│   ├── courses/
+│   ├── manage.py
 │   └── ...
 ├── frontend/
-│   ├── src/               # React source files
-│   ├── public/            # Public HTML files
-│   ├── package.json       # Node.js dependencies
+│   ├── src/
+│   ├── public/
+│   ├── package.json
 │   └── ...
-├── .env                   # Environment variables (create from .env.example)
-├── .env.example           # Environment variables template
-├── requirements.txt       # Python dependencies
-└── README.md             # This file
+├── .env
+├── .env.example
+├── requirements.txt
+└── README.md
 ```
+
+---
 
 ## Features
 
-- ✅ Create new courses
-- ✅ View all courses
-- ✅ Edit existing courses
-- ✅ Delete courses
-- ✅ Simple, clean interface
-- ✅ MongoDB database with mongoengine ODM
-- ✅ Environment variables configuration
-- ✅ Wildcard CORS enabled (allows all origins)
-- ✅ Connection URI support for MongoDB Atlas
+* Create, view, edit, and delete courses
+* Django REST backend
+* React frontend
+* MongoDB with mongoengine
+* MongoDB Atlas support
+* Environment-based configuration
+* Wildcard CORS enabled
+
+---
 
 ## API Endpoints
 
-- `GET /api/courses/` - List all courses
-- `POST /api/courses/` - Create a new course
-- `GET /api/courses/{id}/` - Get a specific course
-- `PUT /api/courses/{id}/` - Update a course
-- `DELETE /api/courses/{id}/` - Delete a course
+* `GET /api/courses/`
+* `POST /api/courses/`
+* `GET /api/courses/{id}/`
+* `PUT /api/courses/{id}/`
+* `DELETE /api/courses/{id}/`
 
-## Environment Variables
+---
 
-All configuration is stored in `.env` file:
+## Troubleshooting (Windows)
 
-### Required Variables
+### MongoDB Not Connecting
 
-- `SECRET_KEY` - Django secret key for security
-- `DEBUG` - Debug mode (True/False)
-- `ALLOWED_HOSTS` - Comma-separated list of allowed hosts (use `*` for all)
-- `DATABASE` - MongoDB database name (default: `LMS-Project`)
+```bat
+mongosh
+```
 
-### MongoDB Configuration
+* Ensure MongoDB service is running
+* Verify `.env` connection string
 
-**Option 1: Connection URI (Recommended)**
-- `DB_CONNECTION` - MongoDB connection URI
-  - Local: `mongodb://localhost:27017/`
-  - Atlas: `mongodb+srv://username:password@cluster.mongodb.net/`
-
-**Option 2: Individual Settings**
-- `MONGODB_HOST` - MongoDB host (default: localhost)
-- `MONGODB_PORT` - MongoDB port (default: 27017)
-- `MONGODB_USERNAME` - MongoDB username (optional)
-- `MONGODB_PASSWORD` - MongoDB password (optional)
-
-### CORS Configuration
-
-- CORS is set to allow all origins (wildcard) by default
-- No additional configuration needed
-
-## Troubleshooting
-
-### MongoDB Connection Issues
-
-1. **Check if MongoDB is running:**
-   ```bash
-   # Check MongoDB status
-   mongosh  # or mongo (older versions)
-   ```
-
-2. **Verify connection string in `.env`:**
-   - For local: `DB_CONNECTION=mongodb://localhost:27017/`
-   - For Atlas: Use the connection string from Atlas dashboard
-
-3. **Check firewall settings** if using remote MongoDB
+---
 
 ### Backend Issues
 
-1. **Virtual environment not activated:**
-   ```bash
-   source venv/bin/activate  # macOS/Linux
-   venv\Scripts\activate      # Windows
-   ```
+* Activate virtual environment:
 
-2. **Dependencies not installed:**
-   ```bash
-   pip install -r ../requirements.txt
-   ```
+```bat
+venv\Scripts\activate
+```
 
-3. **Port 8000 already in use:**
-   ```bash
-   python manage.py runserver 8080  # Use different port
-   ```
+* Install dependencies:
+
+```bat
+pip install -r ..\requirements.txt
+```
+
+* Change port if 8000 is busy:
+
+```bat
+python manage.py runserver 8080
+```
+
+---
 
 ### Frontend Issues
 
-1. **Node modules not installed:**
-   ```bash
-   npm install
-   ```
+* Install packages:
 
-2. **Port 3000 already in use:**
-   - React will automatically suggest using a different port
-   - Or set `PORT=3001 npm start`
+```bat
+npm install
+```
 
-3. **CORS errors:**
-   - Backend has wildcard CORS enabled, should work automatically
-   - Check that backend is running on port 8000
+* Change port:
 
-## Development
+```bat
+set PORT=3001 && npm start
+```
 
-### Adding New Features
+---
 
-1. **Backend (Django):**
-   - Add models in `backend/courses/models.py`
-   - Add serializers in `backend/courses/serializers.py`
-   - Add views in `backend/courses/views.py`
-   - Update URLs in `backend/courses/urls.py`
+## Development Notes
 
-2. **Frontend (React):**
-   - Add components in `frontend/src/`
-   - Update `frontend/src/App.js` to use new components
+### Backend
 
-### Database
+* Models: `backend/courses/models.py`
+* Views: `backend/courses/views.py`
+* URLs: `backend/courses/urls.py`
 
-- Database name: `LMS-Project` (as specified in `DATABASE` env variable)
-- Collections are created automatically by mongoengine
-- No migrations needed
+### Frontend
 
-## License
+* Components: `frontend/src/`
+* Entry point: `frontend/src/App.js`
 
-This project is for educational purposes.
+---
+
