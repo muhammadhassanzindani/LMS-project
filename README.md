@@ -94,13 +94,13 @@ mongosh
 ### Step 4: Setup Backend (Django)
 
 ```bat
-cd backend
-
 python -m venv venv
 
 venv\Scripts\activate
 
 pip install -r ..\requirements.txt
+
+cd backend
 
 python manage.py runserver
 ```
