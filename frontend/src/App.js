@@ -2,23 +2,37 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
-const API_URL = 'http://localhost:8000/api/courses/';
+// Backend URL from environment variable (REACT_APP_ prefix required for React)
+// Add REACT_APP_BACKEND_URL to your .env file in the frontend directory
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+const API_URL = `${BACKEND_URL}/api/courses/`;
 
 function App() {
+  // State for storing list of courses
   const [courses, setCourses] = useState([]);
+  
+  // State for tracking which course is being edited
   const [editingCourse, setEditingCourse] = useState(null);
+  
+  // State for loading indicator
   const [loading, setLoading] = useState(false);
+  
+  // State for error messages
   const [error, setError] = useState(null);
+  
+  // State for form input data
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     instructor: ''
   });
 
+  // Fetch courses when component mounts
   useEffect(() => {
     fetchCourses();
   }, []);
 
+  // Fetch all courses from backend API
   const fetchCourses = async () => {
     setLoading(true);
     setError(null);
@@ -37,6 +51,7 @@ function App() {
     }
   };
 
+  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -46,6 +61,7 @@ function App() {
     setError(null);
   };
 
+  // Handle form submission (create or update course)
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -54,12 +70,15 @@ function App() {
     try {
       let response;
       if (editingCourse) {
+        // Update existing course
         response = await axios.put(`${API_URL}${editingCourse.id}/`, formData);
       } else {
+        // Create new course
         response = await axios.post(API_URL, formData);
       }
       
       if (response.data.success) {
+        // Clear form and refresh courses list
         setFormData({ title: '', description: '', instructor: '' });
         setEditingCourse(null);
         await fetchCourses();
@@ -78,6 +97,7 @@ function App() {
     }
   };
 
+  // Handle edit button click
   const handleEdit = (course) => {
     setEditingCourse(course);
     setFormData({
@@ -88,6 +108,7 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Handle delete button click
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this course?')) {
       return;
@@ -113,6 +134,7 @@ function App() {
     }
   };
 
+  // Handle cancel button click (clear form)
   const handleCancel = () => {
     setFormData({ title: '', description: '', instructor: '' });
     setEditingCourse(null);
